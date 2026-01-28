@@ -425,9 +425,7 @@ C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevCha
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
-C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\scopedcss\bundle\REVOPS.DevChallenge.styles.css
-C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\scopedcss\projectbundle\REVOPS.DevChallenge.bundle.scp.css
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\j62fq3chkv-{0}-bqjiyaj88i-bqjiyaj88i.gz
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\rb3gsftofj-{0}-c2jlpeoesf-c2jlpeoesf.gz
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\ys34pixk0q-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -489,8 +487,6 @@ C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\vh
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\r8r3rwjn52-{0}-mlv21k5csn-mlv21k5csn.gz
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\kgeu1vjp48-{0}-2i0r6wwb69-2i0r6wwb69.gz
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\ikooa3ox90-{0}-iz83ucvm53-iz83ucvm53.gz
-C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\gai8uar6yv-{0}-6akhuyec1e-6akhuyec1e.gz
-C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\dnyvbfrb1d-{0}-6akhuyec1e-6akhuyec1e.gz
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\staticwebassets.development.json
@@ -502,4 +498,4 @@ C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\refint\REVOPS
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevChallenge.pdb
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevChallenge.genruntimeconfig.cache
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\ref\REVOPS.DevChallenge.dll
-C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\33jxvbwpuw-{0}-42kl7cjorc-42kl7cjorc.gz
+C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevChallenge.sourcelink.json
