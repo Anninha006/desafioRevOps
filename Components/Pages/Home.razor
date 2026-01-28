@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @using REVOPS.DevChallenge.Context.Entities
 @using REVOPS.DevChallenge.Services
 @inject IChatInfoService _chatInfoService
@@ -8,84 +8,85 @@
 <div class="main-container">
     <!-- Header -->
     <div class="page-header">
-        <h1>🔍 Chat Info Finder</h1>
+        <h1>🔍 <span class="gradient-text">Chat Info Finder</span></h1>
         <p>Busque informações importantes de chats do Talk para automações. Dados relevantes para #retorna-teucliente-aí e outras automações!</p>
     </div>
 
-    <!-- Content Grid -->
-    <div class="content-grid">
-        <!-- Main Content -->
-        <div>
-            <!-- Search Form -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <form @onsubmit="GetChatInfo">
-                        <div class="search-section">
-                            <input type="text" 
-                                   class="form-control" 
-                                   placeholder="Digite o ID do chat (ex: aPZ-CitJaYbmlVCa)"
-                                   @bind="chatId" 
-                                   @bind:event="oninput" />
-                            <button type="submit" class="btn btn-primary" disabled="@isLoading">
-                                @if (isLoading)
-                                {
-                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                    <span>Buscando...</span>
-                                }
-                                else
-                                {
-                                    <span>🔎 Buscar</span>
-                                }
-                            </button>
-                        </div>
-                        <small class="text-muted">
-                            💡 Dica: O ID do chat fica na URL do Talk, por exemplo: https://app-utalk.umbler.com/chats/<strong>aPZ-CitJaYbmlVCa</strong>
-                        </small>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Error Message -->
-            @if (somethingBadHappened)
-            {
-                <div class="alert alert-danger fade-in mb-4">
-                    <strong>❌ Ops! Algo deu errado:</strong>
-                    <code class="d-block mt-2 p-2 rounded" style="background: rgba(0,0,0,0.3);">@error</code>
-                </div>
-            }
-
-            <!-- Chat Not Found -->
-            @if (chatNotFound)
-            {
-                <div class="alert alert-warning fade-in mb-4">
-                    <strong>🔍 Chat não encontrado</strong>
-                    <p class="mb-0 mt-2">Não conseguimos encontrar um chat com esse ID. Verifique se o ID está correto.</p>
-                </div>
-            }
-
-            <!-- Chat Info Display -->
-            @if (currentChatInfo != null)
-            {
-                <ChatInfoCard Record="currentChatInfo" />
-            }
-            else if (!isLoading && !somethingBadHappened && !chatNotFound)
-            {
-                <div class="card">
-                    <div class="card-body text-center py-5">
-                        <div style="font-size: 4rem; opacity: 0.3;">💬</div>
-                        <h5 class="text-muted mt-3">Nenhum chat pesquisado</h5>
-                        <p class="text-muted mb-0">Digite o ID de um chat acima para ver suas informações</p>
+    <!-- Active Section -->
+    <div class="active-section mb-5">
+        <!-- Search Form -->
+        <div class="card mb-4 search-card shadow-glow">
+            <div class="card-body">
+                <form @onsubmit="GetChatInfo">
+                    <div class="search-section">
+                        <input type="text" 
+                               class="form-control" 
+                               placeholder="Digite o ID do chat (ex: aPZ-CitJaYbmlVCa)"
+                               @bind="chatId" 
+                               @bind:event="oninput" />
+                        <button type="submit" class="btn btn-primary" disabled="@isLoading">
+                            @if (isLoading)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>Buscando...</span>
+                            }
+                            else
+                            {
+                                <i class="bi bi-search me-2"></i><span>Buscar Chat</span>
+                            }
+                        </button>
                     </div>
-                </div>
-            }
+                </form>
+            </div>
         </div>
 
-        <!-- Sidebar with History -->
-        <aside>
-            <ChatHistoryPanel History="searchHistory" OnSelect="SelectFromHistory" />
-        </aside>
+        <!-- Error / Not Found Messages -->
+        @if (somethingBadHappened)
+        {
+            <div class="alert alert-danger fade-in mb-4">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong>Erro:</strong> @error
+            </div>
+        }
+
+        @if (chatNotFound)
+        {
+            <div class="alert alert-warning fade-in mb-4">
+                <i class="bi bi-search me-2"></i>
+                <strong>Chat não encontrado:</strong> Verifique se o ID está correto.
+            </div>
+        }
+
+        <!-- Active Chat Display -->
+        @if (currentChatInfo != null)
+        {
+            <div class="active-chat-container fade-in">
+                <ChatInfoCard Record="currentChatInfo" />
+            </div>
+        }
+    </div>
+
+    <!-- History Section - Full Width Table -->
+    <div class="history-section pt-4 border-top border-secondary">
+        <ChatHistoryPanel History="searchHistory" OnSelect="SelectFromHistory" />
     </div>
 </div>
+
+<style>
+    .search-card {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .active-chat-container {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .main-container {
+        padding-bottom: 5rem;
+    }
+</style>
 
 @code {
     private string? chatId = null;
@@ -156,5 +157,8 @@
         chatNotFound = false;
         somethingBadHappened = false;
         error = null;
+        
+        // Scroll to top
+        // In a real app we might use JS interop, but for now user just sees the update
     }
 }

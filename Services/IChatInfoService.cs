@@ -19,9 +19,4 @@ public interface IChatInfoService
     /// Gets the raw chat data from Talk API without saving
     /// </summary>
     Task<Chat?> GetChatFromApiAsync(string chatId);
-
-    /// <summary>
-    /// Updates contact information in Talk API
-    /// </summary>
-    Task<bool> UpdateContactAsync(string contactId, string name, string phoneNumber, string? email = null);
 }

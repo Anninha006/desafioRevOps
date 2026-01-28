@@ -1,4 +1,4 @@
-﻿namespace REVOPS.DevChallenge.Clients.Models;
+namespace REVOPS.DevChallenge.Clients.Models;
 
 public class Chat
 {
@@ -39,4 +39,5 @@ public class OrganizationMember
     public string? Id { get; set; }
     public bool? Muted { get; set; }
     public int? TotalUnread { get; set; }
+    public string? Name { get; set; } // Added Name if available
 }

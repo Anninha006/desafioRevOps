@@ -1,16 +1,17 @@
 [Bb]in/
 [Oo]bj/
+[Ll]og/
+[Tt]est[Rr]esults/
 *.user
 *.userosscache
 *.sln.docstates
 .vs/
 .idea/
 .vscode/
-
-# SQLite
 *.db
+*.db-journal
 *.db-shm
 *.db-wal
-
-# AppSettings secrets (usually you dont commit this, but for this challenge the user probably wants the token included since it's a test token)
-# appsettings.Development.json
+appsettings.json
+appsettings.Development.json
+build_errors.txt

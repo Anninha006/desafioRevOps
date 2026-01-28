@@ -46,18 +46,6 @@ public class ChatInfoService : IChatInfoService
             .ToListAsync();
     }
 
-    public async Task<bool> UpdateContactAsync(string contactId, string name, string phoneNumber, string? email = null)
-    {
-        var contactData = new
-        {
-            name = name,
-            phoneNumber = phoneNumber,
-            email = email
-        };
-
-        return await _talkClient.UpdateContactAsync(contactId, contactData);
-    }
-
     private ChatInfoRecord MapChatToRecord(Chat chat)
     {
         var record = new ChatInfoRecord

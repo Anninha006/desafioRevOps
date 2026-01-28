@@ -75,35 +75,4 @@ public class ChatInfoController : ControllerBase
             return StatusCode(500, $"Erro inesperado: {e.Message}");
         }
     }
-
-    /// <summary>
-    /// Updates contact information in Talk API
-    /// </summary>
-    [HttpPatch(nameof(UpdateContact))]
-    public async Task<ActionResult<bool>> UpdateContact([FromQuery] string contactId, [FromBody] ContactUpdateModel model)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(contactId))
-                return BadRequest("ID do contato é obrigatório.");
-
-            var success = await _chatInfoService.UpdateContactAsync(contactId, model.Name, model.PhoneNumber, model.Email);
-            
-            if (success)
-                return Ok(true);
-            
-            return StatusCode(500, "Falha ao atualizar contato no Talk API.");
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, $"Erro inesperado: {e.Message}");
-        }
-    }
-
-    public class ContactUpdateModel
-    {
-        public string Name { get; set; } = "";
-        public string PhoneNumber { get; set; } = "";
-        public string? Email { get; set; }
-    }
 }

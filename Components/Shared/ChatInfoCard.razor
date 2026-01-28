@@ -1,294 +1,221 @@
 @using System.Text.Json
 @using REVOPS.DevChallenge.Context.Entities
-@using REVOPS.DevChallenge.Services
-@inject IChatInfoService _chatInfoService
 
-<div class="card fade-in">
-    <div class="card-body">
-        <!-- Contact Header -->
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="contact-avatar">
-                @if (!string.IsNullOrEmpty(Record.ContactProfilePictureUrl))
-                {
-                    <img src="@Record.ContactProfilePictureUrl" alt="@Record.ContactName" />
-                }
-                else
-                {
+<div class="chat-info-v2 fade-in">
+    <!-- Header with Profile Photo -->
+    <div class="contact-header-card text-center mb-4">
+        <div class="avatar-wrapper mx-auto mb-3">
+            @if (!string.IsNullOrEmpty(Record.ContactProfilePictureUrl))
+            {
+                <img src="@Record.ContactProfilePictureUrl" alt="@Record.ContactName" class="large-avatar shadow-glow" />
+            }
+            else
+            {
+                <div class="large-avatar-placeholder shadow-glow">
                     @GetInitials(Record.ContactName)
-                }
-            </div>
-            <div class="flex-grow-1">
-                @if (isEditing)
-                {
-                    <div class="edit-form fade-in">
-                        <div class="mb-2">
-                            <label class="form-label small mb-1">Nome</label>
-                            <input type="text" class="form-control form-control-sm" @bind="editName" />
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small mb-1">Telefone</label>
-                            <input type="text" class="form-control form-control-sm" @bind="editPhone" />
-                        </div>
-                        <div class="d-flex gap-2 mt-2">
-                            <button class="btn btn-sm btn-primary" @onclick="SaveContact" disabled="@isSubmitting">
-                                @if (isSubmitting)
-                                {
-                                    <span class="spinner-border spinner-border-sm me-1"></span>
-                                }
-                                Salvar
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" @onclick="CancelEdit" disabled="@isSubmitting">Cancelar</button>
-                        </div>
-                        @if (!string.IsNullOrEmpty(editError))
-                        {
-                            <div class="text-danger small mt-1">@editError</div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4 class="mb-1" style="font-size: 1.25rem;">@(Record.ContactName ?? "Contato Desconhecido")</h4>
-                            <span class="text-secondary">@(Record.ContactPhoneNumber ?? "Sem telefone")</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary py-1" @onclick="StartEdit" title="Editar Contato">
-                            <i class="bi bi-pencil-square"></i> Editar
-                        </button>
-                    </div>
-                }
-            </div>
-            <div class="ms-auto text-end">
-                @if (Record.IsOpen)
-                {
-                    <span class="badge badge-open">Aberto</span>
-                }
-                else
-                {
-                    <span class="badge badge-closed">Fechado</span>
-                }
-                @if (Record.IsWaiting)
-                {
-                    <div class="mt-1">
-                        <span class="badge badge-waiting">Aguardando</span>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <!-- Waiting Time Alert -->
-        @if (Record.IsWaiting && Record.WaitingSinceUTC.HasValue)
-        {
-            <div class="waiting-indicator mb-4">
-                <i class="bi bi-clock-history"></i>
-                <div>
-                    <small class="text-secondary">Tempo de espera</small>
-                    <div class="waiting-time">@FormatWaitingTime(Record.WaitingSinceUTC.Value)</div>
-                </div>
-            </div>
-        }
-
-        <!-- Chat Information Grid -->
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="info-row">
-                    <span class="info-label">ID do Chat</span>
-                    <span class="info-value font-monospace small">@Record.ChatId</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Atendente</span>
-                    <span class="info-value">
-                        @if (Record.IsAnyAttendantAssigned)
-                        {
-                            <span class="text-success">✓ Atribuído</span>
-                        }
-                        else
-                        {
-                            <span class="text-warning">✗ Sem Atendente</span>
-                        }
-                    </span>
-                </div>
-                @if (!string.IsNullOrEmpty(Record.SectorName))
-                {
-                    <div class="info-row">
-                        <span class="info-label">Setor</span>
-                        <span class="info-value">@Record.SectorName</span>
-                    </div>
-                }
-            </div>
-            <div class="col-md-6">
-                <div class="info-row">
-                    <span class="info-label">Mensagens não lidas</span>
-                    <span class="info-value">
-                        @if (Record.TotalUnread > 0)
-                        {
-                            <span class="badge bg-danger">@Record.TotalUnread</span>
-                        }
-                        else
-                        {
-                            <span class="text-muted">0</span>
-                        }
-                    </span>
-                </div>
-                @if (Record.TotalAIResponses > 0)
-                {
-                    <div class="info-row">
-                        <span class="info-label">Respostas IA</span>
-                        <span class="info-value text-info">@Record.TotalAIResponses</span>
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(Record.ChannelName))
-                {
-                    <div class="info-row">
-                        <span class="info-label">Canal</span>
-                        <span class="info-value">@Record.ChannelName</span>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <!-- Active Bot -->
-        @if (!string.IsNullOrEmpty(Record.ActiveBotName))
-        {
-            <div class="mt-3 p-3 rounded" style="background: rgba(99, 102, 241, 0.05); border: 1px dashed var(--accent);">
-                <div class="d-flex align-items-center gap-2">
-                    <span style="font-size: 1.2rem;">🤖</span>
-                    <div>
-                        <small class="text-secondary d-block">Bot Ativo</small>
-                        <span class="fw-semibold">@Record.ActiveBotName</span>
-                        <span class="badge bg-secondary ms-2" style="font-size: 0.6rem;">@Record.ActiveBotStatus</span>
-                    </div>
-                </div>
-            </div>
-        }
-
-        <!-- Last Message -->
-        @if (!string.IsNullOrEmpty(Record.LastMessageContent))
-        {
-            <div class="mt-4">
-                <small class="info-label d-block mb-2">Última Mensagem</small>
-                <div class="p-3 rounded" style="background: var(--bg-surface); border: 1px solid var(--border);">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <small class="badge @(Record.LastMessageSource == "Contact" ? "badge-waiting" : "badge-open")" style="font-size: 0.6rem;">
-                            @(Record.LastMessageSource == "Contact" ? "Contato" : "Atendente")
-                        </small>
-                        @if (Record.LastMessageAtUTC.HasValue)
-                        {
-                            <small class="text-muted" style="font-size: 0.7rem;">@Record.LastMessageAtUTC.Value.ToLocalTime().ToString("dd/MM HH:mm")</small>
-                        }
-                    </div>
-                    <p class="mb-0 small" style="color: var(--text-primary); white-space: pre-wrap;">@TruncateMessage(Record.LastMessageContent, 300)</p>
-                </div>
-            </div>
-        }
-
-        <!-- Tags -->
-        <div class="row mt-4">
-            @if (!string.IsNullOrEmpty(Record.ChatTags))
-            {
-                <div class="col-md-6">
-                    <small class="info-label d-block mb-2">Tags do Chat</small>
-                    <div class="d-flex flex-wrap">
-                        @foreach (var tag in ParseTags(Record.ChatTags))
-                        {
-                            <span class="tag">@tag.Emoji @tag.Name</span>
-                        }
-                    </div>
-                </div>
-            }
-            @if (!string.IsNullOrEmpty(Record.ContactTags))
-            {
-                <div class="col-md-6">
-                    <small class="info-label d-block mb-2">Tags do Contato</small>
-                    <div class="d-flex flex-wrap">
-                        @foreach (var tag in ParseTags(Record.ContactTags))
-                        {
-                            <span class="tag" style="background: rgba(236, 72, 153, 0.1); color: var(--pink); border-color: rgba(236, 72, 153, 0.3);">@tag.Emoji @tag.Name</span>
-                        }
-                    </div>
                 </div>
             }
         </div>
-
-        <!-- Footer -->
-        <div class="mt-4 pt-3 d-flex justify-content-between align-items-center" style="border-top: 1px solid var(--border);">
-            <small class="text-muted">
-                📋 Pesquisado em @Record.SearchedAtUTC.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss")
-            </small>
-            @if (Record.ChatCreatedAtUTC.HasValue)
+        <h2 class="contact-name mb-1">@(Record.ContactName ?? "Contato Desconhecido")</h2>
+        <div class="contact-subinfo d-flex justify-content-center gap-3 align-items-center">
+            <span class="text-secondary"><i class="bi bi-telephone"></i> @(Record.ContactPhoneNumber ?? "Sem telefone")</span>
+            @if (Record.IsAnyAttendantAssigned)
             {
-                <small class="text-muted">
-                    Criado em @Record.ChatCreatedAtUTC.Value.ToLocalTime().ToString("dd/MM/yyyy")
-                </small>
+                <span class="badge badge-open"><i class="bi bi-person-check"></i> Atendente: @(Record.AssignedMemberId ?? "Atribuído")</span>
+            }
+            else
+            {
+                <span class="badge badge-warning"><i class="bi bi-person-dash"></i> Sem Atendente</span>
             }
         </div>
     </div>
+
+    <div class="row g-4">
+        <!-- Status Card -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header"><i class="bi bi-activity me-2"></i> Status do Chat</div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <span class="info-label">Estado</span>
+                        <span class="info-value">
+                            @if (Record.IsOpen)
+                            {
+                                <span class="badge badge-open">Aberto</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-closed">Fechado</span>
+                            }
+                        </span>
+                    </div>
+                    @if (Record.IsWaiting)
+                    {
+                        <div class="info-row">
+                            <span class="info-label">Aguardando</span>
+                            <span class="info-value">
+                                <span class="badge badge-waiting pulse">Sim</span>
+                            </span>
+                        </div>
+                        @if (Record.WaitingSinceUTC.HasValue)
+                        {
+                            <div class="waiting-indicator mt-3">
+                                <div class="waiting-time">@FormatWaitingTime(Record.WaitingSinceUTC.Value)</div>
+                                <div class="text-secondary small">em espera</div>
+                            </div>
+                        }
+                    }
+                    <div class="info-row">
+                        <span class="info-label">Não lidas</span>
+                        <span class="info-value">
+                            @if (Record.TotalUnread > 0)
+                            {
+                                <span class="badge bg-danger">@Record.TotalUnread</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">0</span>
+                            }
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Card -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <span class="info-label">Canal</span>
+                        <span class="info-value">@(Record.ChannelName ?? "-")</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Setor</span>
+                        <span class="info-value">@(Record.SectorName ?? "-")</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Record.ActiveBotName))
+                    {
+                        <div class="info-row">
+                            <span class="info-label">Bot Ativo</span>
+                            <span class="info-value text-info">🤖 @Record.ActiveBotName</span>
+                        </div>
+                    }
+                    <div class="info-row">
+                        <span class="info-label">ID do Chat</span>
+                        <span class="info-value small font-monospace">@Record.ChatId</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last Message Card -->
+        @if (!string.IsNullOrEmpty(Record.LastMessageContent))
+        {
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <span><i class="bi bi-chat-left-text me-2"></i> Última Mensagem</span>
+                        <small class="text-muted">@Record.LastMessageAtUTC?.ToLocalTime().ToString("HH:mm")</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex gap-3 align-items-start">
+                            <span class="badge @(Record.LastMessageSource == "Contact" ? "badge-waiting" : "badge-open")">
+                                @(Record.LastMessageSource == "Contact" ? "Cliente" : "Equipe")
+                            </span>
+                            <p class="mb-0 message-content">@Record.LastMessageContent</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Tags Card -->
+        @if (!string.IsNullOrEmpty(Record.ChatTags) || !string.IsNullOrEmpty(Record.ContactTags))
+        {
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header"><i class="bi bi-tags me-2"></i> Etiquetas (Tags)</div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Record.ChatTags))
+                        {
+                            <div class="mb-3">
+                                <small class="text-muted d-block mb-2">Chat:</small>
+                                <div class="d-flex flex-wrap">
+                                    @foreach (var tag in ParseTags(Record.ChatTags))
+                                    {
+                                        <span class="tag">@tag.Emoji @tag.Name</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Record.ContactTags))
+                        {
+                            <div>
+                                <small class="text-muted d-block mb-2">Contato:</small>
+                                <div class="d-flex flex-wrap">
+                                    @foreach (var tag in ParseTags(Record.ContactTags))
+                                    {
+                                        <span class="tag" style="border-color: var(--pink); color: var(--pink);">@tag.Emoji @tag.Name</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
+
+<style>
+    .avatar-wrapper {
+        width: 120px;
+        height: 120px;
+        position: relative;
+    }
+    .large-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid var(--accent);
+        object-fit: cover;
+    }
+    .large-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 800;
+        color: white;
+        border: 4px solid var(--border);
+    }
+    .contact-name {
+        font-size: 2.25rem;
+        font-weight: 800;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .message-content {
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+    .shadow-glow {
+        box-shadow: 0 0 30px var(--accent-glow);
+    }
+</style>
 
 @code {
     [Parameter]
     public required ChatInfoRecord Record { get; set; }
-
-    private bool isEditing = false;
-    private bool isSubmitting = false;
-    private string editName = "";
-    private string editPhone = "";
-    private string? editError = null;
-
-    private void StartEdit()
-    {
-        editName = Record.ContactName ?? "";
-        editPhone = Record.ContactPhoneNumber ?? "";
-        editError = null;
-        isEditing = true;
-    }
-
-    private void CancelEdit()
-    {
-        isEditing = false;
-        editError = null;
-    }
-
-    private async Task SaveContact()
-    {
-        if (string.IsNullOrWhiteSpace(editName) || string.IsNullOrWhiteSpace(editPhone))
-        {
-            editError = "Nome e telefone são obrigatórios.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(Record.ContactId))
-        {
-            editError = "ID do contato não encontrado.";
-            return;
-        }
-
-        isSubmitting = true;
-        editError = null;
-
-        try
-        {
-            var success = await _chatInfoService.UpdateContactAsync(Record.ContactId, editName, editPhone);
-            if (success)
-            {
-                Record.ContactName = editName;
-                Record.ContactPhoneNumber = editPhone;
-                isEditing = false;
-            }
-            else
-            {
-                editError = "Falha ao atualizar no Talk API. Verifique as permissões do seu token.";
-            }
-        }
-        catch (Exception ex)
-        {
-            editError = $"Erro: {ex.Message}";
-        }
-        finally
-        {
-            isSubmitting = false;
-        }
-    }
 
     private string GetInitials(string? name)
     {
@@ -307,13 +234,6 @@
         if (duration.TotalHours >= 1)
             return $"{(int)duration.TotalHours}h {duration.Minutes}min";
         return $"{(int)duration.TotalMinutes} min";
-    }
-
-    private string TruncateMessage(string message, int maxLength)
-    {
-        if (string.IsNullOrEmpty(message)) return "";
-        if (message.Length <= maxLength) return message;
-        return message.Substring(0, maxLength) + "...";
     }
 
     private List<TagInfo> ParseTags(string? tagsJson)

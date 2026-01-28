@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using REVOPS.DevChallenge.Clients.Models;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -8,7 +8,6 @@ namespace REVOPS.DevChallenge.Clients;
 public interface ITalkClient
 {
     Task<Chat?> GetChatAsync(string chatId);
-    Task<bool> UpdateContactAsync(string contactId, object contactData);
 }
 
 public class TalkClient : ITalkClient
@@ -36,6 +35,7 @@ public class TalkClient : ITalkClient
     {
         try
         {
+            // The Talk API uses /v1/chats/{chatId} to get a specific chat
             var response = await _httpClient.GetAsync($"v1/chats/{chatId}?organizationId={_settings.OrganizationId}");
             
             if (!response.IsSuccessStatusCode)
@@ -54,31 +54,6 @@ public class TalkClient : ITalkClient
         {
             Console.WriteLine($"Error calling Talk API: {ex.Message}");
             throw;
-        }
-    }
-
-    public async Task<bool> UpdateContactAsync(string contactId, object contactData)
-    {
-        try
-        {
-            var json = JsonSerializer.Serialize(contactData, _options);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            
-            var response = await _httpClient.PatchAsync($"v1/contacts/{contactId}?organizationId={_settings.OrganizationId}", content);
-            
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Talk API Update Error: {response.StatusCode} - {errorContent}");
-                return false;
-            }
-            
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error updating contact in Talk API: {ex.Message}");
-            return false;
         }
     }
 }
