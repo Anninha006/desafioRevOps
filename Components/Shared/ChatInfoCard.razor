@@ -2,7 +2,6 @@
 @using REVOPS.DevChallenge.Context.Entities
 
 <div class="chat-info-v2 fade-in">
-    <!-- Header with Profile Photo -->
     <div class="contact-header-card text-center mb-4">
         <div class="avatar-wrapper mx-auto mb-3">
             @if (!string.IsNullOrEmpty(Record.ContactProfilePictureUrl))
@@ -31,7 +30,6 @@
     </div>
 
     <div class="row g-4">
-        <!-- Status Card -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><i class="bi bi-activity me-2"></i> Status do Chat</div>
@@ -82,7 +80,6 @@
             </div>
         </div>
 
-        <!-- Connection Card -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
@@ -110,7 +107,6 @@
             </div>
         </div>
 
-        <!-- Last Message Card -->
         @if (!string.IsNullOrEmpty(Record.LastMessageContent))
         {
             <div class="col-12">
@@ -131,7 +127,6 @@
             </div>
         }
 
-        <!-- Tags Card -->
         @if (!string.IsNullOrEmpty(Record.ChatTags) || !string.IsNullOrEmpty(Record.ContactTags))
         {
             <div class="col-12">
@@ -170,52 +165,18 @@
 </div>
 
 <style>
-    .avatar-wrapper {
-        width: 120px;
-        height: 120px;
-        position: relative;
-    }
-    .large-avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 4px solid var(--accent);
-        object-fit: cover;
-    }
-    .large-avatar-placeholder {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: var(--gradient);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        font-weight: 800;
-        color: white;
-        border: 4px solid var(--border);
-    }
-    .contact-name {
-        font-size: 2.25rem;
-        font-weight: 800;
-        background: var(--gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    .message-content {
-        color: var(--text-primary);
-        font-size: 1.1rem;
-        line-height: 1.5;
-    }
-    .shadow-glow {
-        box-shadow: 0 0 30px var(--accent-glow);
-    }
+    /* Estilos omitidos para brevidade mas permanecem iguais */
+    .avatar-wrapper { width: 120px; height: 120px; position: relative; }
+    .large-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent); object-fit: cover; }
+    .large-avatar-placeholder { width: 120px; height: 120px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: white; border: 4px solid var(--border); }
+    .contact-name { font-size: 2.25rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .message-content { color: var(--text-primary); font-size: 1.1rem; line-height: 1.5; }
+    .shadow-glow { box-shadow: 0 0 30px var(--accent-glow); }
 </style>
 
 @code {
     [Parameter]
-    public required ChatInfoRecord Record { get; set; }
+    public required RegistroDeChat Record { get; set; }
 
     private string GetInitials(string? name)
     {
@@ -239,20 +200,9 @@
     private List<TagInfo> ParseTags(string? tagsJson)
     {
         if (string.IsNullOrEmpty(tagsJson)) return new();
-        try
-        {
-            return JsonSerializer.Deserialize<List<TagInfo>>(tagsJson) ?? new();
-        }
-        catch
-        {
-            return new();
-        }
+        try { return JsonSerializer.Deserialize<List<TagInfo>>(tagsJson) ?? new(); }
+        catch { return new(); }
     }
 
-    private class TagInfo
-    {
-        public string? Name { get; set; }
-        public string? Emoji { get; set; }
-        public string? Color { get; set; }
-    }
+    private class TagInfo { public string? Name { get; set; } public string? Emoji { get; set; } public string? Color { get; set; } }
 }

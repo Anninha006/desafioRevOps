@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,7 +12,7 @@ namespace REVOPS.DevChallenge.Migrations
         {
             migrationBuilder.AddColumn<string>(
                 name: "FullHistoryJson",
-                table: "ChatInfoRecords",
+                table: "RegistroDeChats",
                 type: "TEXT",
                 nullable: true);
         }
@@ -22,7 +22,7 @@ namespace REVOPS.DevChallenge.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "FullHistoryJson",
-                table: "ChatInfoRecords");
+                table: "RegistroDeChats");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace REVOPS.DevChallenge;
+namespace REVOPS.DevChallenge;
 
 public class AppSettings
 {

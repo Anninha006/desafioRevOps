@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace REVOPS.DevChallenge.Migrations
 {
     /// <inheritdoc />
-    public partial class AddChatInfoRecordsTable : Migration
+    public partial class AddRegistroDeChatsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ChatInfoRecords",
+                name: "RegistroDeChats",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -47,17 +47,17 @@ namespace REVOPS.DevChallenge.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChatInfoRecords", x => x.Id);
+                    table.PrimaryKey("PK_RegistroDeChats", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatInfoRecords_ChatId",
-                table: "ChatInfoRecords",
+                name: "IX_RegistroDeChats_ChatId",
+                table: "RegistroDeChats",
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatInfoRecords_SearchedAtUTC",
-                table: "ChatInfoRecords",
+                name: "IX_RegistroDeChats_SearchedAtUTC",
+                table: "RegistroDeChats",
                 column: "SearchedAtUTC");
         }
 
@@ -65,7 +65,7 @@ namespace REVOPS.DevChallenge.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ChatInfoRecords");
+                name: "RegistroDeChats");
         }
     }
 }
