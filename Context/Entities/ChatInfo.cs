@@ -1,70 +1,137 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*
+ * ============================================================
+ * ENTIDADES DO BANCO DE DADOS
+ * ============================================================
+ * Estas classes representam as tabelas do banco de dados.
+ * Cada propriedade = uma coluna na tabela.
+ * ============================================================
+ */
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace REVOPS.DevChallenge.Context.Entities;
 
 /// <summary>
-/// Entity for storing chat search history with rich information
+/// Registro de uma pesquisa de chat - esta é a tabela PRINCIPAL
+/// Cada vez que você pesquisa um chat, um novo registro é criado aqui
 /// </summary>
 public class ChatInfoRecord
 {
+    // ====================================================
+    // IDENTIFICAÇÃO
+    // ====================================================
+    
+    /// <summary>
+    /// ID único no banco (gerado automaticamente)
+    /// </summary>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     
     /// <summary>
-    /// The Talk chat ID
+    /// ID do chat na API do Talk (ex: "aPZ-CitJaYbmlVCa")
     /// </summary>
     public string? ChatId { get; set; }
     
     /// <summary>
-    /// When this search was performed
+    /// Data/hora em que a pesquisa foi realizada
     /// </summary>
     public DateTime SearchedAtUTC { get; set; } = DateTime.UtcNow;
     
-    // Attendant info
+    // ====================================================
+    // ATENDENTE
+    // ====================================================
+    
+    /// <summary>
+    /// Se tem algum atendente atribuído ao chat
+    /// </summary>
     public bool IsAnyAttendantAssigned { get; set; }
+    
+    /// <summary>
+    /// ID do atendente (se houver)
+    /// </summary>
     public string? AssignedMemberId { get; set; }
     
-    // Chat status
+    // ====================================================
+    // STATUS DO CHAT
+    // ====================================================
+    
+    /// <summary>
+    /// Se o chat está aberto (true) ou fechado (false)
+    /// </summary>
     public bool IsOpen { get; set; }
+    
+    /// <summary>
+    /// Se está aguardando atendimento
+    /// </summary>
     public bool IsWaiting { get; set; }
+    
     public DateTime? WaitingSinceUTC { get; set; }
     public DateTime? ChatCreatedAtUTC { get; set; }
     public DateTime? ClosedAtUTC { get; set; }
     
-    // Contact info
+    // ====================================================
+    // INFORMAÇÕES DO CONTATO (CLIENTE)
+    // ====================================================
+    
     public string? ContactId { get; set; }
     public string? ContactName { get; set; }
     public string? ContactPhoneNumber { get; set; }
     public string? ContactProfilePictureUrl { get; set; }
     public bool ContactIsBlocked { get; set; }
     
-    // Channel and Sector
+    // ====================================================
+    // CANAL E SETOR
+    // ====================================================
+    
+    /// <summary>
+    /// Canal de origem (ex: WhatsApp, Instagram)
+    /// </summary>
     public string? ChannelId { get; set; }
     public string? ChannelName { get; set; }
+    
+    /// <summary>
+    /// Setor de atendimento
+    /// </summary>
     public string? SectorId { get; set; }
     public string? SectorName { get; set; }
     
-    // Tags (stored as JSON)
+    // ====================================================
+    // TAGS (etiquetas) - Armazenadas como JSON
+    // ====================================================
+    
     public string? ChatTags { get; set; }
     public string? ContactTags { get; set; }
     
-    // Counts
+    // ====================================================
+    // CONTADORES
+    // ====================================================
+    
     public int TotalUnread { get; set; }
     public int TotalAIResponses { get; set; }
     
-    // Last message info
+    // ====================================================
+    // ÚLTIMA MENSAGEM
+    // ====================================================
+    
     public string? LastMessageContent { get; set; }
     public DateTime? LastMessageAtUTC { get; set; }
-    public string? LastMessageSource { get; set; }
+    public string? LastMessageSource { get; set; }  // "Contact" ou "Team"
     
-    // Bot info
+    // ====================================================
+    // BOT ATIVO
+    // ====================================================
+    
     public string? ActiveBotName { get; set; }
     public string? ActiveBotStatus { get; set; }
     
+    // ====================================================
+    // PROPRIEDADE CALCULADA (não salva no banco)
+    // ====================================================
+    
     /// <summary>
-    /// Calculated waiting time in minutes when searched
+    /// Tempo de espera em minutos (calculado, não armazenado)
     /// </summary>
     [NotMapped]
     public double? WaitingTimeMinutes => WaitingSinceUTC.HasValue 
@@ -73,7 +140,7 @@ public class ChatInfoRecord
 }
 
 /// <summary>
-/// Legacy entity - kept for backward compatibility
+/// Entidade legada - mantida apenas para compatibilidade com código antigo
 /// </summary>
 public class ChatInfo
 {
