@@ -1,0 +1,13 @@
+## Git and Project Structure (.gitignore)
+bin/
+obj/
+*.db
+*.user
+*.lock.json
+.vs/
+.vscode/
+.gemini/
+build_errors.txt
+REVOPS.DevChallenge/bin/
+REVOPS.DevChallenge/obj/
+REVOPS.DevChallenge/ChallengeDatabase.db

@@ -499,3 +499,4 @@ C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevCha
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevChallenge.genruntimeconfig.cache
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\ref\REVOPS.DevChallenge.dll
 C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\REVOPS.DevChallenge.sourcelink.json
+C:\Users\annes\desafioRevOps\REVOPS.DevChallenge\obj\Debug\net10.0\compressed\33jxvbwpuw-{0}-ozuw0oxf5x-ozuw0oxf5x.gz

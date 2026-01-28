@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("REVOPS.DevChallenge")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6000ab4f6d38223a16ba7125be101172be78e2b2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ebd45f6f52b0cef2351eb1a8ad2a7197b4691dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("REVOPS.DevChallenge")]
 [assembly: System.Reflection.AssemblyTitleAttribute("REVOPS.DevChallenge")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

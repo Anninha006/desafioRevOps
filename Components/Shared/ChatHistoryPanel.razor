@@ -1,13 +1,13 @@
 @using REVOPS.DevChallenge.Context.Entities
 
-<div class="card shadow-lg">
-    <div class="card-header d-flex justify-content-between align-items-center bg-elevated">
-        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i> Histórico de Consultas</h5>
-        <span class="badge bg-secondary">@History.Count registros</span>
+<div class="card history-card shadow-lg">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom">
+        <h5 class="mb-0 text-dark"><i class="bi bi-clock-history me-2"></i> Histórico de Consultas</h5>
+        <span class="badge bg-primary">@History.Count registros</span>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-0 bg-white">
         <div class="table-responsive">
-            <table class="table table-hover table-dark mb-0 custom-history-table">
+            <table class="table table-hover table-light mb-0 custom-history-table">
                 <thead>
                     <tr>
                         <th class="ps-4">Contato</th>
@@ -22,7 +22,7 @@
                     @if (History.Count == 0)
                     {
                         <tr>
-                            <td colspan="6" class="text-center py-5 text-muted">
+                            <td colspan="6" class="text-center py-5 text-muted bg-white">
                                 <i class="bi bi-folder-x d-block mb-2" style="font-size: 2rem;"></i>
                                 Nenhuma pesquisa realizada ainda.
                             </td>
@@ -32,26 +32,26 @@
                     {
                         @foreach (var record in History)
                         {
-                            <tr class="align-middle">
+                            <tr class="align-middle bg-white">
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="avatar-sm">
                                             @if (!string.IsNullOrEmpty(record.ContactProfilePictureUrl))
                                             {
-                                                <img src="@record.ContactProfilePictureUrl" alt="@record.ContactName" class="rounded-circle border border-secondary" style="width: 32px; height: 32px;" />
+                                                <img src="@record.ContactProfilePictureUrl" alt="@record.ContactName" class="rounded-circle border border-light" style="width: 32px; height: 32px;" />
                                             }
                                             else
                                             {
-                                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-dark border" style="width: 32px; height: 32px; font-size: 0.8rem;">
                                                     @GetInitials(record.ContactName)
                                                 </div>
                                             }
                                         </div>
-                                        <div class="fw-bold">@(record.ContactName ?? "Desconhecido")</div>
+                                        <div class="fw-bold text-dark">@(record.ContactName ?? "Desconhecido")</div>
                                     </div>
                                 </td>
                                 <td>
-                                    <small class="font-monospace text-secondary">@record.ChatId</small>
+                                    <small class="font-monospace text-muted">@record.ChatId</small>
                                 </td>
                                 <td>
                                     @if (record.IsOpen)
@@ -77,7 +77,7 @@
                                     @record.SearchedAtUTC.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
                                 </td>
                                 <td class="pe-4 text-end">
-                                    <button class="btn btn-sm btn-outline-primary" @onclick="() => OnSelect.InvokeAsync(record)">
+                                    <button class="btn btn-sm btn-primary" @onclick="() => OnSelect.InvokeAsync(record)">
                                         <i class="bi bi-eye"></i> Visualizar
                                     </button>
                                 </td>
@@ -91,14 +91,20 @@
 </div>
 
 <style>
+    .history-card {
+        border: none !important;
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
     .custom-history-table {
         border-collapse: separate;
         border-spacing: 0;
+        background: white !important;
     }
     .custom-history-table thead th {
-        background: var(--bg-elevated);
-        border-bottom: 2px solid var(--border);
-        color: var(--text-secondary);
+        background: #f8f9fa !important;
+        border-bottom: 2px solid #dee2e6 !important;
+        color: #495057 !important;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
@@ -108,14 +114,15 @@
     }
     .custom-history-table tbody tr {
         transition: background-color 0.2s ease;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid #dee2e6 !important;
     }
     .custom-history-table tbody tr:hover {
-        background-color: rgba(255, 255, 255, 0.03) !important;
+        background-color: #f1f3f5 !important;
     }
     .avatar-sm {
         flex-shrink: 0;
     }
+    .text-dark { color: #212529 !important; }
 </style>
 
 @code {
