@@ -122,7 +122,22 @@
     .avatar-sm {
         flex-shrink: 0;
     }
-    .text-dark { color: #212529 !important; }
+    .badge-open {
+        background: rgba(34, 197, 94, 0.2);
+        color: #1b5e20 !important; /* Dark green */
+        border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+    .badge-closed {
+        background: rgba(100, 116, 139, 0.2);
+        color: #334155 !important; /* Dark slate */
+        border: 1px solid rgba(100, 116, 139, 0.4);
+    }
+    .badge-waiting {
+        background: rgba(245, 158, 11, 0.2);
+        color: #9a3412 !important; /* Deep orange */
+        border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .text-dark { color: #000000 !important; }
 </style>
 
 @code {
