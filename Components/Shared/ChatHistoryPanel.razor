@@ -1,0 +1,92 @@
+@using REVOPS.DevChallenge.Context.Entities
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>📜 Histórico de Pesquisas</span>
+        <small class="text-muted">@History.Count registros</small>
+    </div>
+    <div class="card-body p-2" style="max-height: 600px; overflow-y: auto;">
+        @if (History.Count == 0)
+        {
+            <div class="text-center text-muted py-4">
+                <p class="mb-0">Nenhuma pesquisa ainda</p>
+                <small>Pesquise um chat para começar</small>
+            </div>
+        }
+        else
+        {
+            @foreach (var record in History)
+            {
+                <div class="history-item" @onclick="() => OnSelect.InvokeAsync(record)">
+                    <div class="history-item-header">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="contact-avatar" style="width: 32px; height: 32px; font-size: 0.75rem;">
+                                @GetInitials(record.ContactName)
+                            </div>
+                            <div>
+                                <div class="fw-semibold" style="font-size: 0.9rem;">
+                                    @(record.ContactName ?? "Desconhecido")
+                                </div>
+                                <small class="text-muted font-monospace" style="font-size: 0.7rem;">
+                                    @TruncateId(record.ChatId)
+                                </small>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column align-items-end">
+                            @if (record.IsOpen)
+                            {
+                                <span class="badge badge-open" style="font-size: 0.65rem; padding: 0.25rem 0.5rem;">Aberto</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-closed" style="font-size: 0.65rem; padding: 0.25rem 0.5rem;">Fechado</span>
+                            }
+                        </div>
+                    </div>
+                    @if (record.IsWaiting && record.WaitingSinceUTC.HasValue)
+                    {
+                        <small class="text-warning d-block mt-1">
+                            ⏳ Aguardando há @FormatWaitingTime(record.WaitingSinceUTC.Value)
+                        </small>
+                    }
+                    <div class="history-item-time mt-2">
+                        @record.SearchedAtUTC.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<ChatInfoRecord> History { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<ChatInfoRecord> OnSelect { get; set; }
+
+    private string GetInitials(string? name)
+    {
+        if (string.IsNullOrEmpty(name)) return "?";
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
+    }
+
+    private string TruncateId(string? id)
+    {
+        if (string.IsNullOrEmpty(id)) return "";
+        return id.Length > 15 ? id.Substring(0, 15) + "..." : id;
+    }
+
+    private string FormatWaitingTime(DateTime waitingSince)
+    {
+        var duration = DateTime.UtcNow - waitingSince;
+        if (duration.TotalDays >= 1)
+            return $"{(int)duration.TotalDays}d {duration.Hours}h";
+        if (duration.TotalHours >= 1)
+            return $"{(int)duration.TotalHours}h {duration.Minutes}min";
+        return $"{(int)duration.TotalMinutes} min";
+    }
+}

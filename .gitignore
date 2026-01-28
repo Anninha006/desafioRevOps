@@ -1,0 +1,16 @@
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+.idea/
+.vscode/
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# AppSettings secrets (usually you dont commit this, but for this challenge the user probably wants the token included since it's a test token)
+# appsettings.Development.json

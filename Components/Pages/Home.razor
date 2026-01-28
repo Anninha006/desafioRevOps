@@ -1,0 +1,160 @@
+﻿@page "/"
+@using REVOPS.DevChallenge.Context.Entities
+@using REVOPS.DevChallenge.Services
+@inject IChatInfoService _chatInfoService
+
+<PageTitle>RevOps Chat Info</PageTitle>
+
+<div class="main-container">
+    <!-- Header -->
+    <div class="page-header">
+        <h1>🔍 Chat Info Finder</h1>
+        <p>Busque informações importantes de chats do Talk para automações. Dados relevantes para #retorna-teucliente-aí e outras automações!</p>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+        <!-- Main Content -->
+        <div>
+            <!-- Search Form -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form @onsubmit="GetChatInfo">
+                        <div class="search-section">
+                            <input type="text" 
+                                   class="form-control" 
+                                   placeholder="Digite o ID do chat (ex: aPZ-CitJaYbmlVCa)"
+                                   @bind="chatId" 
+                                   @bind:event="oninput" />
+                            <button type="submit" class="btn btn-primary" disabled="@isLoading">
+                                @if (isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    <span>Buscando...</span>
+                                }
+                                else
+                                {
+                                    <span>🔎 Buscar</span>
+                                }
+                            </button>
+                        </div>
+                        <small class="text-muted">
+                            💡 Dica: O ID do chat fica na URL do Talk, por exemplo: https://app-utalk.umbler.com/chats/<strong>aPZ-CitJaYbmlVCa</strong>
+                        </small>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            @if (somethingBadHappened)
+            {
+                <div class="alert alert-danger fade-in mb-4">
+                    <strong>❌ Ops! Algo deu errado:</strong>
+                    <code class="d-block mt-2 p-2 rounded" style="background: rgba(0,0,0,0.3);">@error</code>
+                </div>
+            }
+
+            <!-- Chat Not Found -->
+            @if (chatNotFound)
+            {
+                <div class="alert alert-warning fade-in mb-4">
+                    <strong>🔍 Chat não encontrado</strong>
+                    <p class="mb-0 mt-2">Não conseguimos encontrar um chat com esse ID. Verifique se o ID está correto.</p>
+                </div>
+            }
+
+            <!-- Chat Info Display -->
+            @if (currentChatInfo != null)
+            {
+                <ChatInfoCard Record="currentChatInfo" />
+            }
+            else if (!isLoading && !somethingBadHappened && !chatNotFound)
+            {
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <div style="font-size: 4rem; opacity: 0.3;">💬</div>
+                        <h5 class="text-muted mt-3">Nenhum chat pesquisado</h5>
+                        <p class="text-muted mb-0">Digite o ID de um chat acima para ver suas informações</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar with History -->
+        <aside>
+            <ChatHistoryPanel History="searchHistory" OnSelect="SelectFromHistory" />
+        </aside>
+    </div>
+</div>
+
+@code {
+    private string? chatId = null;
+    private ChatInfoRecord? currentChatInfo = null;
+    private List<ChatInfoRecord> searchHistory = new();
+    private bool somethingBadHappened = false;
+    private bool chatNotFound = false;
+    private bool isLoading = false;
+    private string? error = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadHistory();
+    }
+
+    private async Task LoadHistory()
+    {
+        try
+        {
+            searchHistory = await _chatInfoService.GetHistoryAsync(50);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading history: {ex.Message}");
+        }
+    }
+
+    private async Task GetChatInfo()
+    {
+        if (string.IsNullOrWhiteSpace(chatId))
+            return;
+
+        isLoading = true;
+        chatNotFound = false;
+        somethingBadHappened = false;
+        error = null;
+        currentChatInfo = null;
+
+        try
+        {
+            var result = await _chatInfoService.GetChatInfoAsync(chatId.Trim());
+
+            if (result != null)
+            {
+                currentChatInfo = result;
+                await LoadHistory(); // Refresh history
+            }
+            else
+            {
+                chatNotFound = true;
+            }
+        }
+        catch (Exception e)
+        {
+            somethingBadHappened = true;
+            error = e.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void SelectFromHistory(ChatInfoRecord record)
+    {
+        currentChatInfo = record;
+        chatId = record.ChatId;
+        chatNotFound = false;
+        somethingBadHappened = false;
+        error = null;
+    }
+}
