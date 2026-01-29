@@ -84,7 +84,7 @@ h1:focus {
 }
 
 .gradient-text {
-    background: var(--gradient);
+    background: linear-gradient(135deg, #005C55 0%, #17A5DE 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -215,9 +215,9 @@ h1:focus {
 }
 
 .btn-primary {
-    background: var(--gradient);
+    background: linear-gradient(135deg, #005C55 0%, #17A5DE 100%);
     color: white;
-    box-shadow: 0 4px 15px var(--accent-glow);
+    box-shadow: 0 4px 15px rgba(0, 92, 85, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
