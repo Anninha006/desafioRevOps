@@ -1,17 +1,20 @@
 @page "/"
 @using REVOPS.DevChallenge.Context.Entities
 @using REVOPS.DevChallenge.Services
-@inject IServicoChat _servicoChat
+@inject IChatInfoService _chatInfoService
 
 <PageTitle>RevOps Chat Info</PageTitle>
 
 <div class="main-container">
+    <!-- Header -->
     <div class="page-header">
-        <h1>🔍 <span class="gradient-text">Informações do Talk</span></h1>
+        <h1><span class="gradient-text">Informações do Talk</span></h1>
         <p>Inserir o ID da conversa do Umblerito no campo de pesquisa abaixo para reter informações sobre a conversa e contato.</p>
     </div>
 
+    <!-- Active Section -->
     <div class="active-section mb-5">
+        <!-- Search Form -->
         <div class="card mb-4 search-card shadow-glow">
             <div class="card-body">
                 <form @onsubmit="GetChatInfo">
@@ -37,6 +40,7 @@
             </div>
         </div>
 
+        <!-- Error / Not Found Messages -->
         @if (somethingBadHappened)
         {
             <div class="alert alert-danger fade-in mb-4">
@@ -53,6 +57,7 @@
             </div>
         }
 
+        <!-- Active Chat Display -->
         @if (currentChatInfo != null)
         {
             <div class="active-chat-container fade-in">
@@ -61,6 +66,7 @@
         }
     </div>
 
+    <!-- History Section - Full Width Table -->
     <div class="history-section pt-4 border-top border-secondary">
         <ChatHistoryPanel History="searchHistory" OnSelect="SelectFromHistory" />
     </div>
@@ -84,8 +90,8 @@
 
 @code {
     private string? chatId = null;
-    private RegistroDeChat? currentChatInfo = null;
-    private List<RegistroDeChat> searchHistory = new();
+    private ChatInfoRecord? currentChatInfo = null;
+    private List<ChatInfoRecord> searchHistory = new();
     private bool somethingBadHappened = false;
     private bool chatNotFound = false;
     private bool isLoading = false;
@@ -100,11 +106,11 @@
     {
         try
         {
-            searchHistory = await _servicoChat.GetHistoryAsync(50);
+            searchHistory = await _chatInfoService.GetHistoryAsync(50);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao carregar histórico: {ex.Message}");
+            Console.WriteLine($"Error loading history: {ex.Message}");
         }
     }
 
@@ -121,12 +127,12 @@
 
         try
         {
-            var result = await _servicoChat.GetChatInfoAsync(chatId.Trim());
+            var result = await _chatInfoService.GetChatInfoAsync(chatId.Trim());
 
             if (result != null)
             {
                 currentChatInfo = result;
-                await LoadHistory();
+                await LoadHistory(); // Refresh history
             }
             else
             {
@@ -144,12 +150,15 @@
         }
     }
 
-    private void SelectFromHistory(RegistroDeChat record)
+    private void SelectFromHistory(ChatInfoRecord record)
     {
         currentChatInfo = record;
         chatId = record.ChatId;
         chatNotFound = false;
         somethingBadHappened = false;
         error = null;
+        
+        // Scroll to top
+        // In a real app we might use JS interop, but for now user just sees the update
     }
 }

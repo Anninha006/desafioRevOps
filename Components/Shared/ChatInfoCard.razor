@@ -2,6 +2,7 @@
 @using REVOPS.DevChallenge.Context.Entities
 
 <div class="chat-info-v2 fade-in">
+    <!-- Header with Profile Photo -->
     <div class="contact-header-card text-center mb-4">
         <div class="avatar-wrapper mx-auto mb-3">
             @if (!string.IsNullOrEmpty(Record.ContactProfilePictureUrl))
@@ -30,6 +31,7 @@
     </div>
 
     <div class="row g-4">
+        <!-- Status Card -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><i class="bi bi-activity me-2"></i> Status do Chat</div>
@@ -80,33 +82,35 @@
             </div>
         </div>
 
+        <!-- Connection Card -->
         <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-header"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
+            <div class="card h-100 bg-white">
+                <div class="card-header bg-light" style="color: #333 !important; -webkit-text-fill-color: initial !important;"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
                 <div class="card-body">
                     <div class="info-row">
-                        <span class="info-label">Canal</span>
-                        <span class="info-value">@(Record.ChannelName ?? "-")</span>
+                        <span class="info-label" style="color: #666 !important; -webkit-text-fill-color: initial !important;">Canal</span>
+                        <span class="info-value" style="color: #000 !important; -webkit-text-fill-color: #000 !important; font-weight: 600;">@(Record.ChannelName ?? "-")</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Setor</span>
-                        <span class="info-value">@(Record.SectorName ?? "-")</span>
+                        <span class="info-label" style="color: #666 !important; -webkit-text-fill-color: initial !important;">Setor</span>
+                        <span class="info-value" style="color: #000 !important; -webkit-text-fill-color: #000 !important; font-weight: 600;">@(Record.SectorName ?? "-")</span>
                     </div>
                     @if (!string.IsNullOrEmpty(Record.ActiveBotName))
                     {
                         <div class="info-row">
-                            <span class="info-label">Bot Ativo</span>
-                            <span class="info-value text-info">🤖 @Record.ActiveBotName</span>
+                            <span class="info-label" style="color: #666 !important; -webkit-text-fill-color: initial !important;">Bot Ativo</span>
+                            <span class="info-value" style="color: #0d6efd !important; -webkit-text-fill-color: #0d6efd !important;">🤖 @Record.ActiveBotName</span>
                         </div>
                     }
                     <div class="info-row">
-                        <span class="info-label">ID do Chat</span>
-                        <span class="info-value small font-monospace">@Record.ChatId</span>
+                        <span class="info-label" style="color: #666 !important; -webkit-text-fill-color: initial !important;">ID do Chat</span>
+                        <span class="info-value small font-monospace" style="color: #000 !important; -webkit-text-fill-color: #000 !important;">@Record.ChatId</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Last Message Card -->
         @if (!string.IsNullOrEmpty(Record.LastMessageContent))
         {
             <div class="col-12">
@@ -127,6 +131,7 @@
             </div>
         }
 
+        <!-- Tags Card -->
         @if (!string.IsNullOrEmpty(Record.ChatTags) || !string.IsNullOrEmpty(Record.ContactTags))
         {
             <div class="col-12">
@@ -165,18 +170,52 @@
 </div>
 
 <style>
-    /* Estilos omitidos para brevidade mas permanecem iguais */
-    .avatar-wrapper { width: 120px; height: 120px; position: relative; }
-    .large-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent); object-fit: cover; }
-    .large-avatar-placeholder { width: 120px; height: 120px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: white; border: 4px solid var(--border); }
-    .contact-name { font-size: 2.25rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .message-content { color: var(--text-primary); font-size: 1.1rem; line-height: 1.5; }
-    .shadow-glow { box-shadow: 0 0 30px var(--accent-glow); }
+    .avatar-wrapper {
+        width: 120px;
+        height: 120px;
+        position: relative;
+    }
+    .large-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid var(--accent);
+        object-fit: cover;
+    }
+    .large-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 800;
+        color: white;
+        border: 4px solid var(--border);
+    }
+    .contact-name {
+        font-size: 2.25rem;
+        font-weight: 800;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .message-content {
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+    .shadow-glow {
+        box-shadow: 0 0 30px var(--accent-glow);
+    }
 </style>
 
 @code {
     [Parameter]
-    public required RegistroDeChat Record { get; set; }
+    public required ChatInfoRecord Record { get; set; }
 
     private string GetInitials(string? name)
     {
@@ -200,9 +239,20 @@
     private List<TagInfo> ParseTags(string? tagsJson)
     {
         if (string.IsNullOrEmpty(tagsJson)) return new();
-        try { return JsonSerializer.Deserialize<List<TagInfo>>(tagsJson) ?? new(); }
-        catch { return new(); }
+        try
+        {
+            return JsonSerializer.Deserialize<List<TagInfo>>(tagsJson) ?? new();
+        }
+        catch
+        {
+            return new();
+        }
     }
 
-    private class TagInfo { public string? Name { get; set; } public string? Emoji { get; set; } public string? Color { get; set; } }
+    private class TagInfo
+    {
+        public string? Name { get; set; }
+        public string? Emoji { get; set; }
+        public string? Color { get; set; }
+    }
 }

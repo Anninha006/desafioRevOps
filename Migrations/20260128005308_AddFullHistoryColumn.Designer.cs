@@ -10,7 +10,7 @@ using REVOPS.DevChallenge.Context;
 
 namespace REVOPS.DevChallenge.Migrations
 {
-    [DbContext(typeof(ContextoBanco))]
+    [DbContext(typeof(ChallengeContext))]
     [Migration("20260128005308_AddFullHistoryColumn")]
     partial class AddFullHistoryColumn
     {

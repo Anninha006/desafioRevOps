@@ -91,24 +91,61 @@
 </div>
 
 <style>
-    /* Estilos omitidos para brevidade mas permanecem iguais */
-    .history-card { border: none !important; border-radius: var(--radius); overflow: hidden; }
-    .custom-history-table { border-collapse: separate; border-spacing: 0; background: white !important; }
-    .custom-history-table thead th { background: #f8f9fa !important; border-bottom: 2px solid #dee2e6 !important; color: #495057 !important; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; padding-top: 1rem; padding-bottom: 1rem; }
-    .custom-history-table tbody tr { transition: background-color 0.2s ease; border-bottom: 1px solid #dee2e6 !important; }
-    .custom-history-table tbody tr:hover { background-color: #f1f3f5 !important; }
-    .avatar-sm { flex-shrink: 0; }
-    .badge-open { background: rgba(34, 197, 94, 0.2); color: #1b5e20 !important; border: 1px solid rgba(34, 197, 94, 0.4); }
-    .badge-closed { background: rgba(100, 116, 139, 0.2); color: #334155 !important; border: 1px solid rgba(100, 116, 139, 0.4); }
+    .history-card {
+        border: none !important;
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
+    .custom-history-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white !important;
+    }
+    .custom-history-table thead th {
+        background: #f8f9fa !important;
+        border-bottom: 2px solid #dee2e6 !important;
+        color: #495057 !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .custom-history-table tbody tr {
+        transition: background-color 0.2s ease;
+        border-bottom: 1px solid #dee2e6 !important;
+    }
+    .custom-history-table tbody tr:hover {
+        background-color: #f1f3f5 !important;
+    }
+    .avatar-sm {
+        flex-shrink: 0;
+    }
+    .badge-open {
+        background: rgba(34, 197, 94, 0.2);
+        color: #1b5e20 !important; /* Dark green */
+        border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+    .badge-closed {
+        background: rgba(100, 116, 139, 0.2);
+        color: #334155 !important; /* Dark slate */
+        border: 1px solid rgba(100, 116, 139, 0.4);
+    }
+    .badge-waiting {
+        background: rgba(245, 158, 11, 0.2);
+        color: #9a3412 !important; /* Deep orange */
+        border: 1px solid rgba(245, 158, 11, 0.4);
+    }
     .text-dark { color: #000000 !important; }
 </style>
 
 @code {
     [Parameter]
-    public List<RegistroDeChat> History { get; set; } = new();
+    public List<ChatInfoRecord> History { get; set; } = new();
 
     [Parameter]
-    public EventCallback<RegistroDeChat> OnSelect { get; set; }
+    public EventCallback<ChatInfoRecord> OnSelect { get; set; }
 
     private string GetInitials(string? name)
     {
@@ -122,8 +159,10 @@
     private string FormatWaitingTime(DateTime waitingSince)
     {
         var duration = DateTime.UtcNow - waitingSince;
-        if (duration.TotalDays >= 1) return $"{(int)duration.TotalDays}d";
-        if (duration.TotalHours >= 1) return $"{(int)duration.TotalHours}h";
+        if (duration.TotalDays >= 1)
+            return $"{(int)duration.TotalDays}d";
+        if (duration.TotalHours >= 1)
+            return $"{(int)duration.TotalHours}h";
         return $"{(int)duration.TotalMinutes}m";
     }
 }

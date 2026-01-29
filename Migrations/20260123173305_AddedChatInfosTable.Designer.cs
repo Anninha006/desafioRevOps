@@ -9,7 +9,7 @@ using REVOPS.DevChallenge.Context;
 
 namespace REVOPS.DevChallenge.Migrations
 {
-    [DbContext(typeof(ContextoBanco))]
+    [DbContext(typeof(ChallengeContext))]
     [Migration("20260123173305_AddedChatInfosTable")]
     partial class AddedChatInfosTable
     {

@@ -9,8 +9,8 @@ using REVOPS.DevChallenge.Context;
 
 namespace REVOPS.DevChallenge.Migrations
 {
-    [DbContext(typeof(ContextoBanco))]
-    partial class ContextoBancoModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ChallengeContext))]
+    partial class ChallengeContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

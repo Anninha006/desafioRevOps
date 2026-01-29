@@ -1,9 +1,3 @@
-/*
- * ============================================================
- * CONTROLADOR DE INFORMAÇÕES DE CHAT (API REST)
- * ============================================================
- */
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using REVOPS.DevChallenge.Context.Entities;
@@ -16,46 +10,46 @@ namespace REVOPS.DevChallenge.Controllers;
 [Route("api/v1/[controller]")]
 public class ChatInfoController : ControllerBase
 {
-    private readonly IServicoChat _servicoChat;
+    private readonly IChatInfoService _chatInfoService;
 
-    public ChatInfoController(IServicoChat servicoChat)
+    public ChatInfoController(IChatInfoService chatInfoService)
     {
-        _servicoChat = servicoChat;
+        _chatInfoService = chatInfoService;
     }
 
     /// <summary>
-    /// Verifica se o chat tem algum atendente atribuído.
+    /// This endpoint makes a request to Talk, searching for the chat with the specified <paramref name="chatId"/> and tells us if any attendant is assigned.
     /// </summary>
     [HttpGet(nameof(IsChatWithSomeone))]
     public async Task<ActionResult<bool>> IsChatWithSomeone(string chatId)
     {
         try
         {
-            var chatInfo = await _servicoChat.GetChatInfoAsync(chatId);
+            var chatInfo = await _chatInfoService.GetChatInfoAsync(chatId);
 
             if (chatInfo == null)
-                return BadRequest("Não encontramos nenhum chat com o ID fornecido!");
+                return BadRequest("NÃ£o encontramos nenhum chat com o ID fornecido!");
 
             return Ok(chatInfo.IsAnyAttendantAssigned);
         }
         catch (Exception e)
         {
-            return StatusCode(500, $"Erro inesperado: {e.Message}");
+            return StatusCode(500, $"Erro inesperado ao processar a requisiÃ§Ã£o: {e.Message}");
         }
     }
 
     /// <summary>
-    /// Retorna as informações completas de um chat.
+    /// Gets full chat information from Talk API
     /// </summary>
     [HttpGet(nameof(GetChatInfo))]
-    public async Task<ActionResult<RegistroDeChat>> GetChatInfo(string chatId)
+    public async Task<ActionResult<ChatInfoRecord>> GetChatInfo(string chatId)
     {
         try
         {
-            var chatInfo = await _servicoChat.GetChatInfoAsync(chatId);
+            var chatInfo = await _chatInfoService.GetChatInfoAsync(chatId);
 
             if (chatInfo == null)
-                return NotFound("Chat não encontrado");
+                return NotFound("Chat nÃ£o encontrado");
 
             return Ok(chatInfo);
         }
@@ -66,14 +60,14 @@ public class ChatInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Retorna o histórico de pesquisas do banco de dados.
+    /// Gets search history from the database
     /// </summary>
     [HttpGet(nameof(GetHistory))]
-    public async Task<ActionResult<List<RegistroDeChat>>> GetHistory([FromQuery] int limit = 50)
+    public async Task<ActionResult<List<ChatInfoRecord>>> GetHistory([FromQuery] int limit = 50)
     {
         try
         {
-            var history = await _servicoChat.GetHistoryAsync(limit);
+            var history = await _chatInfoService.GetHistoryAsync(limit);
             return Ok(history);
         }
         catch (Exception e)
