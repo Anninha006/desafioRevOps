@@ -34,7 +34,7 @@
         <!-- Status Card -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><i class="bi bi-activity me-2"></i> Status do Chat</div>
+                <div class="card-header" style="background: linear-gradient(135deg, #005C55 0%, #007A70 100%); color: #FFFFFF;"><i class="bi bi-activity me-2"></i> Status do Chat</div>
                 <div class="card-body">
                     <div class="info-row">
                         <span class="info-label">Estado</span>
@@ -85,7 +85,7 @@
         <!-- Connection Card -->
         <div class="col-md-6">
             <div class="card h-100 bg-white">
-                <div class="card-header bg-light" style="color: #333 !important; -webkit-text-fill-color: initial !important;"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
+                <div class="card-header" style="background: linear-gradient(135deg, #005C55 0%, #007A70 100%); color: #FFFFFF;"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
                 <div class="card-body">
                     <div class="info-row">
                         <span class="info-label" style="color: #666 !important; -webkit-text-fill-color: initial !important;">Canal</span>
@@ -115,9 +115,9 @@
         {
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
+                    <div class="card-header d-flex justify-content-between" style="background: linear-gradient(135deg, #005C55 0%, #007A70 100%); color: #FFFFFF;">
                         <span><i class="bi bi-chat-left-text me-2"></i> Última Mensagem</span>
-                        <small class="text-muted">@Record.LastMessageAtUTC?.ToLocalTime().ToString("HH:mm")</small>
+                        <small style="color: rgba(255,255,255,0.7);">@Record.LastMessageAtUTC?.ToLocalTime().ToString("HH:mm")</small>
                     </div>
                     <div class="card-body">
                         <div class="d-flex gap-3 align-items-start">
@@ -136,7 +136,7 @@
         {
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header"><i class="bi bi-tags me-2"></i> Etiquetas (Tags)</div>
+                    <div class="card-header" style="background: linear-gradient(135deg, #005C55 0%, #007A70 100%); color: #FFFFFF;"><i class="bi bi-tags me-2"></i> Etiquetas (Tags)</div>
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(Record.ChatTags))
                         {
