@@ -18,7 +18,7 @@ public class ChatInfoController : ControllerBase
     }
 
     /// <summary>
-    /// This endpoint makes a request to Talk, searching for the chat with the specified <paramref name="chatId"/> and tells us if any attendant is assigned.
+    /// Verifica se o chat possui algum atendente atribuído.
     /// </summary>
     [HttpGet(nameof(IsChatWithSomeone))]
     public async Task<ActionResult<bool>> IsChatWithSomeone(string chatId)
@@ -39,7 +39,7 @@ public class ChatInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Gets full chat information from Talk API
+    /// Obtém as informações completas do chat na API do Talk.
     /// </summary>
     [HttpGet(nameof(GetChatInfo))]
     public async Task<ActionResult<ChatInfoRecord>> GetChatInfo(string chatId)
@@ -60,7 +60,7 @@ public class ChatInfoController : ControllerBase
     }
 
     /// <summary>
-    /// Gets search history from the database
+    /// Obtém o histórico de pesquisas do banco de dados.
     /// </summary>
     [HttpGet(nameof(GetHistory))]
     public async Task<ActionResult<List<ChatInfoRecord>>> GetHistory([FromQuery] int limit = 50)

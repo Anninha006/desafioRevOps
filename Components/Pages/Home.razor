@@ -6,15 +6,15 @@
 <PageTitle>RevOps Chat Info</PageTitle>
 
 <div class="main-container">
-    <!-- Header -->
+    <!-- Cabeçalho -->
     <div class="page-header">
         <h1 style="color: #005C55 !important; -webkit-text-fill-color: #005C55 !important;">Informações do Talk</h1>
         <p style="color: #4a5568;">Inserir o ID da conversa do Umblerito no campo de pesquisa abaixo para reter informações sobre a conversa e contato.</p>
     </div>
 
-    <!-- Active Section -->
+    <!-- Seção Ativa -->
     <div class="active-section mb-5">
-        <!-- Search Form -->
+        <!-- Formulário de Busca -->
         <div class="card mb-4 search-card shadow-glow">
             <div class="card-body">
                 <form @onsubmit="GetChatInfo">
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <!-- Error / Not Found Messages -->
+        <!-- Mensagens de Erro / Não Encontrado -->
         @if (somethingBadHappened)
         {
             <div class="alert alert-danger fade-in mb-4">
@@ -57,7 +57,7 @@
             </div>
         }
 
-        <!-- Active Chat Display -->
+        <!-- Display do Chat Ativo -->
         @if (currentChatInfo != null)
         {
             <div class="active-chat-container fade-in">
@@ -66,7 +66,7 @@
         }
     </div>
 
-    <!-- History Section - Full Width Table -->
+    <!-- Seção de Histórico - Tabela em Largura Total -->
     <div class="history-section pt-4 border-top border-secondary">
         <ChatHistoryPanel History="searchHistory" OnSelect="SelectFromHistory" />
     </div>
@@ -110,7 +110,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading history: {ex.Message}");
+            Console.WriteLine($"Erro ao carregar histórico: {ex.Message}");
         }
     }
 
@@ -132,7 +132,7 @@
             if (result != null)
             {
                 currentChatInfo = result;
-                await LoadHistory(); // Refresh history
+                await LoadHistory(); // Atualiza histórico
             }
             else
             {
@@ -158,7 +158,7 @@
         somethingBadHappened = false;
         error = null;
         
-        // Scroll to top
-        // In a real app we might use JS interop, but for now user just sees the update
+        // Rolar para o topo
+        // Em um app real usaríamos JS interop, mas por enquanto o usuário apenas vê a atualização
     }
 }

@@ -2,7 +2,7 @@
 @using REVOPS.DevChallenge.Context.Entities
 
 <div class="chat-info-v2 fade-in">
-    <!-- Header with Profile Photo -->
+    <!-- Cabeçalho com Foto de Perfil -->
     <div class="contact-header-card text-center mb-4">
         <div class="avatar-wrapper mx-auto mb-3">
             @if (!string.IsNullOrEmpty(Record.ContactProfilePictureUrl))
@@ -31,7 +31,7 @@
     </div>
 
     <div class="row g-4">
-        <!-- Status Card -->
+        <!-- Card de Status -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header" style="background: linear-gradient(135deg, #005C55 0%, #007A70 100%); color: #FFFFFF;"><i class="bi bi-activity me-2"></i> Status do Chat</div>
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <!-- Connection Card -->
+        <!-- Card de Conexão -->
         <div class="col-md-6">
             <div class="card h-100 bg-white">
                 <div class="card-header" style="background: linear-gradient(135deg, #005C55 0%, #007A70 100%); color: #FFFFFF;"><i class="bi bi-diagram-3 me-2"></i> Origem e Setor</div>
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <!-- Last Message Card -->
+        <!-- Card de Última Mensagem -->
         @if (!string.IsNullOrEmpty(Record.LastMessageContent))
         {
             <div class="col-12">
@@ -131,7 +131,7 @@
             </div>
         }
 
-        <!-- Tags Card -->
+        <!-- Card de Etiquetas -->
         @if (!string.IsNullOrEmpty(Record.ChatTags) || !string.IsNullOrEmpty(Record.ContactTags))
         {
             <div class="col-12">

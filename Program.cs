@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Adiciona os serviços ao container.
 builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -21,19 +21,19 @@ builder.Services.AddDbContext<ChallengeContext>(options =>
     options.EnableSensitiveDataLogging();
 });
 
-// Register HttpClient for TalkClient
+// Registra o HttpClient para o TalkClient
 builder.Services.AddHttpClient<ITalkClient, TalkClient>();
 
-// Register ChatInfoService
+// Registra o ChatInfoService
 builder.Services.AddScoped<IChatInfoService, ChatInfoService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configura o pipeline de requisições HTTP.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // O valor padrão do HSTS é 30 dias. Você pode querer alterar isso para cenários de produção, veja https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
