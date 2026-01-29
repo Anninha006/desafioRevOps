@@ -1,30 +1,30 @@
-/* RevOps Challenge - Premium Dark Theme */
+/* RevOps Challenge - Umbler Talk Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Custom Properties */
+/* Custom Properties - Umbler Talk Colors */
 :root {
-    --bg-dark: #0a0a0f;
-    --bg-surface: #12121a;
-    --bg-card: #1a1a25;
-    --bg-elevated: #22222f;
-    --accent: #6366f1;
-    --accent-light: #818cf8;
-    --accent-glow: rgba(99, 102, 241, 0.4);
-    --pink: #ec4899;
-    --pink-glow: rgba(236, 72, 153, 0.4);
-    --gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-light: rgba(255, 255, 255, 0.12);
+    --bg-dark: #F7FAFF;
+    --bg-surface: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-elevated: #F7FAFF;
+    --accent: #005C55;
+    --accent-light: #007A70;
+    --accent-glow: rgba(0, 92, 85, 0.3);
+    --pink: #17A5DE;
+    --pink-glow: rgba(23, 165, 222, 0.3);
+    --gradient: linear-gradient(135deg, #005C55 0%, #17A5DE 100%);
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border: rgba(0, 92, 85, 0.15);
+    --border-light: rgba(0, 92, 85, 0.1);
     --success: #22c55e;
     --warning: #f59e0b;
     --danger: #ef4444;
     --radius: 16px;
     --radius-sm: 10px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+    --shadow: 0 4px 6px -1px rgba(0, 92, 85, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 92, 85, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
     --shadow-glow: 0 0 40px var(--accent-glow);
 }
 
@@ -61,8 +61,8 @@ body::before {
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+        radial-gradient(ellipse at top left, rgba(0, 92, 85, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(23, 165, 222, 0.06) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
 }
@@ -140,7 +140,7 @@ h1:focus {
 /* Card Component */
 .card {
     background: var(--bg-card);
-    border: 1px solid var(--border);
+    border: 1px solid #e2e8f0;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
@@ -148,16 +148,16 @@ h1:focus {
 }
 
 .card:hover {
-    border-color: var(--border-light);
+    border-color: var(--accent);
     box-shadow: var(--shadow-lg);
 }
 
 .card-header {
-    background: var(--bg-elevated);
+    background: linear-gradient(135deg, #005C55 0%, #007A70 100%);
     border-bottom: 1px solid var(--border);
     padding: 1.25rem 1.5rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -177,8 +177,8 @@ h1:focus {
 /* Form Controls */
 .form-control {
     width: 100%;
-    background: var(--bg-surface);
-    border: 2px solid var(--border);
+    background: #FFFFFF;
+    border: 2px solid #e2e8f0;
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     padding: 1rem 1.25rem;
@@ -191,7 +191,7 @@ h1:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 4px var(--accent-glow);
-    background: var(--bg-card);
+    background: #FFFFFF;
 }
 
 .form-control::placeholder {
